@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Getting Started: Serving Web Content</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1 th:text="'Hello, ' + ${name} + '!'" />
+<hr>
+<p th:text="'Количество элементов: ' + ${formsCounter}"/>
+<hr>
+
+<div th:each="formName : ${forms}">
+  <span th:text="${formName}"></span>
+</div>
+
+<hr>
+
+<div th:each="form : ${statForms}">
+  <span th:text="${form.id} + ' -- ' + ${form.name}"></span>
+</div>
+
+<hr>
+
+<div th:each="form : ${statClass}">
+  <span th:text="${form.id} + ' -- ' + ${form.name}"></span>
+</div>
+
+<hr>
+
+<div th:each="form : ${sqlStatMenuItems}">
+  <span th:text="'Из SQL: ' + ${form.id} + ' -- ' + ${form.name}"></span>
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+.auth {
+    width: calc(100% - 20px);
+    max-width: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color__background);
+    padding: 30px;
+    border-radius: 10px;
+}
+.auth__title {
+    margin-bottom: 30px;
+}
+.auth__error {
+    border-radius: 10px;
+    background-color: #fd9999;
+    padding: 15px 20px;
+    text-align: center;
+    transition: padding 200ms ease;
+    margin: 0;
+}
+.auth__error:empty {
+    padding: 0;
+}
+.auth__form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.auth__info {
+    margin: 0;
+}
+.auth__button {
+    margin-top: 10px;
+}
