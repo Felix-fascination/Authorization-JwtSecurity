@@ -3,8 +3,9 @@ package ru.cgpb.securityappauth.DAO.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.cgpb.securityappauth.DAO.ClientsDao;
-import ru.cgpb.securityappauth.models.Clients;
+import ru.cgpb.securityappauth.DAO.UserDao;
+import ru.cgpb.securityappauth.models.Client;
+import ru.cgpb.securityappauth.models.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,19 +14,19 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class ClientsDaoImpl implements ClientsDao {
+public class UserDaoImpl implements UserDao {
     JdbcTemplate jdbcTemplate;
     @Override
-    public Optional<Clients> findUserByLogin(String login) {
+    public Optional<Client> findUserByLogin(String login) {
         String sql = "SELECT * FROM CLIENT_M WHERE LOG = ?";
-        List<Clients> client = jdbcTemplate.query(sql,(rs, rowNum) -> makeClient(rs), login);
+        List<Client> client = jdbcTemplate.query(sql,(rs, rowNum) -> makeClient(rs), login);
         if (client.isEmpty()) return Optional.empty();
         else return Optional.of(client.get(0));
     }
 
     //Need to rewrite as I left all the fields blank
     @Override
-    public Clients createClient(Clients client) {
+    public Client createClient(Client client) {
         String sql = "INSERT INTO CLIENT_M (LOG, PWD) VALUES (?, ?)";
         jdbcTemplate.update(sql, client.getLogin(), client.getPassword());
         return client;
@@ -36,11 +37,18 @@ public class ClientsDaoImpl implements ClientsDao {
 
     }
 
-    private Clients makeClient (ResultSet rs) throws SQLException {
+    private Client makeClient (ResultSet rs) throws SQLException {
         long id = rs.getLong("ID");
         String login = rs.getString("LOG");
         String password = rs.getString("PWD");
-        return new Clients(id, login, password);
+        Role role;
+        try {
+             role = Role.values()[rs.getByte("ADM")];
+        }
+        catch (Exception e){
+            role = Role.USER;
+        }
+        return new Client(id, login, password, role);
     }
 
 

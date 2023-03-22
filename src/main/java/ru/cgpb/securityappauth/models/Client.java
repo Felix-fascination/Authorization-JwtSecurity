@@ -1,33 +1,42 @@
-package ru.cgpb.securityappauth.security;
+package ru.cgpb.securityappauth.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.cgpb.securityappauth.models.Clients;
 
 import java.util.Collection;
+import java.util.List;
 
-public class ClientsDetails implements UserDetails {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Client implements UserDetails {
+    private long id;
 
-    private final Clients clients;
+    private String login;
 
-    public ClientsDetails(Clients clients) {
-        this.clients = clients;
-    }
+    private String password;
+
+    private Role role;
 
     // Коллекция тех прав, которые есть у пользователя (роли)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(getRole().name()));
+
     }
 
     @Override
     public String getPassword() {
-        return this.clients.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return this.clients.getLogin();
+        return getLogin();
     }
 
     // Аккаунт действительный
@@ -52,10 +61,5 @@ public class ClientsDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    // Нужно, чтобы получать данные аутентифицированного пользователя
-    public Clients getClients() {
-        return this.clients;
     }
 }

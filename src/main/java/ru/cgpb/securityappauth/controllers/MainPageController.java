@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 @Controller
-public class MainPage {
+public class MainPageController {
     @GetMapping("/")
     public String mainPage (Model model) {
         Connection conn = null;

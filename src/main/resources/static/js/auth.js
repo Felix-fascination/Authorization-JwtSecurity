@@ -3,17 +3,20 @@ $('.auth__form').submit(function() {
 	let pass = $(".input-field[name=pwd]").val();
 
 	$.ajax({
-		url: "/checkValidAuthData",
+		url: "/authenticate",
 		type: "POST",
 		dataType: 'json',
-		data: {userLogin: login, userPass: pass},
+		contentType: 'application/json',
+		data: JSON.stringify({userLogin: login, userPass: pass}),
 		success: function(data) {
-			console.log("asda");
 			if("error" in data) {
 				$(".auth__error").text(data.error);
 			} else {
 				location.href = "/";
 			}
+		},
+		error(responce) {
+			console.log(responce);
 		}
 	});
 
