@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.cgpb.securityappauth.models.Otdels;
 import ru.cgpb.securityappauth.models.StatForms;
+import ru.cgpb.securityappauth.services.MainPageService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 
 @Controller
 public class MainPageController {
+
+    MainPageService mainPageService;
     @GetMapping("/")
     public String mainPage (Model model) {
         Connection conn = null;

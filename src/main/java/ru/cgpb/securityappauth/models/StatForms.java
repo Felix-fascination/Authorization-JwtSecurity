@@ -1,29 +1,17 @@
 package ru.cgpb.securityappauth.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@AllArgsConstructor
+@Setter
+@Getter
 public class StatForms implements Serializable {
     String id;
     String name;
 
-    public StatForms(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

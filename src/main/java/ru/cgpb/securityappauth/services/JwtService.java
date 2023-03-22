@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.cgpb.securityappauth.models.Client;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ public class JwtService {
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails);
     }
+
 
     public String getJwtFromRequest(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -95,8 +97,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public void makeCookie(HttpServletResponse response, UserDetails user){
-        var jwtToken = generateToken(user);
+    public void makeCookie(HttpServletResponse response, String jwtToken){
         // Store the JWT token in a cookie
         Cookie jwtCookie = new Cookie("JWT-TOKEN", jwtToken);
         jwtCookie.setHttpOnly(true);

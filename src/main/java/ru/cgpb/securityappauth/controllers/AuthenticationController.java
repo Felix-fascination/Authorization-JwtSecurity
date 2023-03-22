@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.cgpb.securityappauth.DAO.UserDao;
 import ru.cgpb.securityappauth.models.Client;
 import ru.cgpb.securityappauth.models.authentication.AuthenticationRequest;
+import ru.cgpb.securityappauth.services.AuthenticationService;
 import ru.cgpb.securityappauth.services.JwtService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +23,11 @@ import java.util.HashMap;
 @Slf4j
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
+
+    private final AuthenticationService authService;
 
     private final JwtService jwtService;
 
-    private final UserDao userDao;
 
     @GetMapping("/auth")
     public String getAuthForm(){
@@ -37,25 +38,8 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public HashMap<String, String> authenticate(@RequestBody AuthenticationRequest request,
                                   HttpServletResponse response) {
-        HashMap<String, String> result = new HashMap<>();
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getUserLogin(),
-                            request.getUserPass()
-                    )
-            );
-        }
-        catch (Exception e){
-            result.put("error", e.getMessage());
-            return result;
-        }
-        Client user = userDao.findUserByLogin(request.getUserLogin()).get();
-        jwtService.makeCookie(response, user);
-        log.info("Cookie is added");
+        return authService.authenticate(request.getUserLogin(), request.getUserPass(), response);
 
-        result.put("success", "success");
-        return result;
     }
 
     @GetMapping("/errors")
