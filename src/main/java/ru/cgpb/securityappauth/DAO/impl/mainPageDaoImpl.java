@@ -1,5 +1,6 @@
 package ru.cgpb.securityappauth.DAO.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.cgpb.securityappauth.DAO.MainPageDao;
@@ -12,9 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class mainPageDaoImpl implements MainPageDao {
 
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
     @Override
     public ArrayList<Otdels> getSqlOtdels() {
         String sql = "EXEC [dbo].[pKV_V40V_MNU]";
