@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.cgpb.securityappauth.DAO.UserDao;
+import ru.cgpb.securityappauth.config.security.JwtService;
 import ru.cgpb.securityappauth.models.Client;
 
 import javax.servlet.http.HttpServletResponse;

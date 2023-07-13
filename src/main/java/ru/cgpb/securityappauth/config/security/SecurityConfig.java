@@ -7,7 +7,9 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -17,21 +19,20 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-    //Disable access to all css and templates cause unathorised user doesn't need to see all
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        CustomAuthenticationEntryPoint customAuthenticationEntryPoint = new CustomAuthenticationEntryPoint();
         http
                 .csrf()
                     .disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedHandler(accessDeniedHandler)
                 .and()
                     .authorizeHttpRequests()
-                        .antMatchers("/css/auth.css","/css/style.css",
-                        "/css/unauthorized.css", "/js/unauthorized.js",
-                        "/js/auth.js", "/js/ajax-3.4.1.js","/fonts/**",
+                        .antMatchers("/css/**", "/js/**","/fonts/**",
                         "/authenticate", "/errors")
                     .permitAll()
                 .anyRequest()
@@ -39,7 +40,9 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                     .loginPage ("/auth")
-                        .permitAll()
+                    .loginProcessingUrl("/authenticate")
+                    .defaultSuccessUrl("index.html", true)
+                    .failureUrl("/auth")
                 .and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

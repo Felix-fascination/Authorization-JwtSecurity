@@ -1,4 +1,4 @@
-package ru.cgpb.securityappauth.services;
+package ru.cgpb.securityappauth.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
