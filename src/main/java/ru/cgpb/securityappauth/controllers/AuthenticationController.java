@@ -32,10 +32,4 @@ public class AuthenticationController {
         return authService.authenticate(request.getUserLogin(), request.getUserPass(), response);
 
     }
-
-    @GetMapping("/errors")
-    public String unauthorized(){
-        return "unauthorized";
-    }
-
 }
